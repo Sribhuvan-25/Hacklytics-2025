@@ -196,23 +196,23 @@ def simulate_financial_plan(debts, income, non_debt_expenses, initial_savings_ba
         }
     }
 
-# Example usage
-if __name__ == "__main__":
-    debts = [
-        Debt("Credit Card", 5000, 0.18, 100),
-        Debt("Car Loan", 10000, 0.05, 200)
-    ]
-    income = 5000
-    non_debt_expenses = 3000
-    initial_savings_balance = 2000
+# Testing the module
+# if __name__ == "__main__":
+#     debts = [
+#         Debt("Credit Card", 5000, 0.18, 100),
+#         Debt("Car Loan", 10000, 0.05, 200)
+#     ]
+#     income = 5000
+#     non_debt_expenses = 3000
+#     initial_savings_balance = 2000
     
-    strategies = ['avalanche', 'snowball', 'consolidation', 'high_minimum', 'savings_max']
-    risk_tolerances = ['low', 'medium', 'high']
+#     strategies = ['avalanche', 'snowball', 'consolidation', 'high_minimum', 'savings_max']
+#     risk_tolerances = ['low', 'medium', 'high']
     
-    for strategy in strategies:
-        for risk in risk_tolerances:
-            result = simulate_financial_plan(debts, income, non_debt_expenses, initial_savings_balance, 
-                                            risk_tolerance=risk, strategy=strategy)
-            print(f"\nStrategy: {strategy.capitalize()} | Risk Tolerance: {risk.capitalize()}")
-            print("Output for LLM:")
-            print(result)
+#     for strategy in strategies:
+#         for risk in risk_tolerances:
+#             result = simulate_financial_plan(debts, income, non_debt_expenses, initial_savings_balance, 
+#                                             risk_tolerance=risk, strategy=strategy)
+#             print(f"\nStrategy: {strategy.capitalize()} | Risk Tolerance: {risk.capitalize()}")
+#             print("Output for LLM:")
+#             print(result)
