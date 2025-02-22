@@ -47,14 +47,13 @@ def simulate_financial_plan(debts, income, non_debt_expenses, initial_savings_ba
     Returns:
         dict: Structured results for LLM processing with descriptive keys and formatted values
     """
-    # Make a deep copy of the debts list to avoid modifying the original list
+    
     debts = [copy.copy(d) for d in debts]
     
     months = 0
     savings_balance = initial_savings_balance
     total_interest_paid = 0
     
-    # Map risk tolerance to investment option and risk factor
     risk_map = {
         'low': ('savings_account', 'low'),
         'medium': ('stock_market', 'medium'),
@@ -64,16 +63,13 @@ def simulate_financial_plan(debts, income, non_debt_expenses, initial_savings_ba
     savings_interest_rate = savings_options[investment_type]
     monthly_savings_interest = savings_interest_rate / 12
     
-    # Calculate initial savings amount based on percentage of income
     monthly_savings_amount = income * savings_percentage
     
-    # Handle savings-only case if no debts or strategy is 'savings_max'
     if not debts or strategy == 'savings_max':
         cash_flow = income - non_debt_expenses
         if cash_flow < monthly_savings_amount:
-            monthly_savings_amount = cash_flow  # Adjust to max available
+            monthly_savings_amount = cash_flow
         
-        # Project savings for 5 years (60 months) with different options
         post_debt_savings = {}
         for option, rate in savings_options.items():
             risk = risk_map['low'][1] if option == 'savings_account' else (risk_map['medium'][1] if option == 'stock_market' else risk_map['high'][1])
@@ -98,7 +94,6 @@ def simulate_financial_plan(debts, income, non_debt_expenses, initial_savings_ba
             }
         }
     
-    # Debt repayment simulation based on strategy
     if strategy == 'consolidation':
         total_balance = sum(d.balance for d in debts)
         monthly_payment = calculate_consolidated_loan_payment(total_balance, consolidation_rate, consolidation_term)
