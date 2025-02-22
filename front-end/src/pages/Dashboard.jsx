@@ -3,6 +3,7 @@ import Sidebar from '../components/Sidebar';
 import IncomeChart from '../components/charts/IncomeChart';
 import ExpensesChart from '../components/charts/ExpenseChart';
 import DebtChart from '../components/charts/DebtChart';
+import ChatBot from '../components/chat/ChatBot';
 import { getDashboardData } from '../services/api';
 import { Loader2 } from 'lucide-react';
 
@@ -152,7 +153,10 @@ function Dashboard() {
   return (
     <div className="flex bg-gray-900 min-h-screen">
       <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
-      <main className="flex-1 p-8">{renderContent()}</main>
+      <main className="flex-1 p-8">
+        {renderContent()}
+        <ChatBot />
+      </main>
     </div>
   );
 }
