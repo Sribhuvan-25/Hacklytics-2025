@@ -27,13 +27,13 @@ function ExpenseSection({ title, data, onUpdate }) {
       <h3 className="text-lg font-bold mb-2">{title}</h3>
       <div className="space-y-4">
         {data.map(item => (
-          <div key={item.id} className="flex items-center space-x-2">
+          <div key={item.id} className="flex items-center space-x-2 border p-2 rounded bg-gray-700">
             <input
               type="text"
               placeholder="Description"
               value={item.description}
               onChange={(e) => handleChange(item.id, 'description', e.target.value)}
-              className="border border-gray-700 bg-gray-700 p-2 flex-1 text-white placeholder-gray-400 rounded"
+              className="bg-gray-600 border border-gray-600 p-2 text-white rounded w-full"
             />
             <div className="flex items-center space-x-1">
               <span>$</span>
@@ -42,7 +42,7 @@ function ExpenseSection({ title, data, onUpdate }) {
                 placeholder="Amount"
                 value={item.amount}
                 onChange={(e) => handleChange(item.id, 'amount', e.target.value)}
-                className="border border-gray-700 bg-gray-700 p-2 w-24 text-white placeholder-gray-400 rounded"
+                className="bg-gray-600 border border-gray-600 p-2 text-white rounded w-full"
               />
             </div>
             <button

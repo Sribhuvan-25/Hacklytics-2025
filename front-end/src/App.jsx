@@ -8,6 +8,7 @@ function App() {
   const navigate = useNavigate();
 
   // Lift state for each section
+  // TODO: Make them array of objects instead of object of objects.
   const [incomeData, setIncomeData] = useState([
     { id: Date.now(), title: '', amount: '' },
   ]);

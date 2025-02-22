@@ -27,13 +27,13 @@ function IncomeCard({ incomeData, setIncomeData }) {
       <h2 className="text-xl font-bold mb-4">Income</h2>
       <div className="space-y-4">
         {incomeData.map(item => (
-          <div key={item.id} className="flex items-center space-x-2">
+          <div key={item.id} className="flex items-center space-x-2 border p-2 rounded bg-gray-700">
             <input
               type="text"
               placeholder="Title"
               value={item.title}
               onChange={(e) => handleChange(item.id, 'title', e.target.value)}
-              className="border p-2 flex-1 rounded"
+              className="bg-gray-600 border border-gray-600 p-2 text-white rounded w-full"
             />
             <div className="flex items-center space-x-1">
               <span>$</span>
@@ -42,7 +42,7 @@ function IncomeCard({ incomeData, setIncomeData }) {
                 placeholder="Amount"
                 value={item.amount}
                 onChange={(e) => handleChange(item.id, 'amount', e.target.value)}
-                className="border p-2 w-24 rounded"
+                className="bg-gray-600 border border-gray-600 p-2 text-white rounded w-24"
               />
             </div>
             <button
