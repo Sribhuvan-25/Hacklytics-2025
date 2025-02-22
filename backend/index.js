@@ -1,20 +1,20 @@
 const express = require('express')
 const app = express()
+var bodyParser = require('body-parser')
+const cors = require('cors');
 
 require("dotenv").config();
 app.use(express.json());
+app.use(bodyParser.json());
+app.use(cors());
+
+const authRoutes = require("./routes/authRoutes");
 
 
 
 
-app.get('/', (req, res) => {
-    res.send(`Server running on port ${PORT}`);
-});
-
-app.post('/initialData', (req, res) => {
-    res.send('Data received');
-    console.log(req.body);
-})
+app.use("/auth", authRoutes);
+                                                             
 
 PORT = 3000
 
