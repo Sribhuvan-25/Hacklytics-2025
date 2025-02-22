@@ -70,11 +70,12 @@ function App() {
     };
 
     try {
-      const response = await fetch('http://your-backend-endpoint/api/submit', {
+      const response = await fetch('http://127.0.0.1:3000/initialData', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
+      console.log(payload);
       if (response.ok) {
         // Navigate to dashboard on success
         navigate('/dashboard');
