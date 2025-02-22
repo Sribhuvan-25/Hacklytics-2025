@@ -1,41 +1,28 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch
+from langchain_ollama import OllamaLLM
 import json
-
-def generate_financial_report(financial_data):
-    """Generate a financial report using AdaptLLM/finance-LLM locally."""
-
-    model_name = "AdaptLLM/finance-LLM"
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name)
-    
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    model.to(device)
-    
-    prompt = f"""
-    Generate a detailed financial report based on the following data:
-    {json.dumps(financial_data, indent=2)}
-    
-    Structure the report with these sections:
-    1. Introduction: Greet the user and summarize the strategy and risk tolerance.
-    2. Debt Repayment Plan: Explain the time to debt-free and total interest paid.
-    3. Current Savings Status: Detail initial savings, monthly allocation, and savings at debt-free.
-    4. Future Savings Projections: Discuss 5-year savings projections for each investment option.
-    5. Conclusion: Summarize benefits and encourage action.
-    
-    Use a friendly, simple tone and avoid jargon. Limit the report to about 500 words.
+def generate_financial_report_llama(financial_data):
     """
-    
-    inputs = tokenizer(prompt, return_tensors="pt").to(device)
-    outputs = model.generate(
-        **inputs,
-        max_length=1000,
-        temperature=0.7,
-        top_p=0.9,
-        do_sample=True,
-        pad_token_id=tokenizer.eos_token_id
-    )
-    
-    report = tokenizer.decode(outputs[0], skip_special_tokens=True)
-    report_start = report.find("Here’s your financial report:") if "Here’s your financial report:" in report else 0
-    return report[report_start:] if report_start else report
+    Generate a detailed financial report using a local LLaMA model via LangChain's LlamaCpp.
+    The prompt includes the full financial analysis data to allow the model to generate an in-depth report.
+    """
+
+    prompt = f"""
+        You are a seasoned financial advisor with expertise in personal finance and wealth management.
+        Generate a detailed, data-driven financial report using the following computed financial analysis.
+        Use the exact numbers and computed values to provide specific, actionable recommendations.
+        Ensure that your report includes:
+        1. An Introduction summarizing the user's financial situation (total income, expenses, debt, current savings).
+        2. A Debt Repayment Plan detailing each debt, extra payments, estimated time to become debt-free, and total interest saved.
+        3. A Current Savings Status section that explains current savings and recommended monthly savings.
+        4. Future Savings Projections and Investment Recommendations with precise 5-year growth projections.
+        5. A Conclusion that recaps the key recommendations and provides clear next steps.
+
+        Financial Analysis Data:
+        {json.dumps(financial_data, indent=2)}
+
+        Please produce a comprehensive report of about 500 words that includes exact values, percentage splits, and clear, step-by-step recommendations.
+    """
+
+    llm = OllamaLLM(model="llama3.2", prompt=prompt)
+    report = llm(prompt)
+    return report
