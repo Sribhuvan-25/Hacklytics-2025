@@ -1,21 +1,24 @@
-const User = require("../models/User");
+const { GetCommand } = require('@aws-sdk/lib-dynamodb');
 
-async function handleGetDetails(req, res) {
-  try {
-    
-    const username = req.query.username;
-    console.log(username)
-    const details = await User.findOne({ "userDetails.username": username });
-    console.log(details)
-    console.log(details)
-    res.status(200).json(details);
-  } catch (error) {
-    console.log(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching user details" });
-  }
+async function handleGetDetails(req, res, dynamoDB) {
+    try {
+        const username = req.query.username;
+
+        const getParams = {
+            TableName: 'abs-hacklytics', // Ensure this matches your table name
+            Key: { username }
+        };
+
+        const details = await dynamoDB.send(new GetCommand(getParams));
+        if (!details.Item) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        res.status(200).json(details.Item);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'An error occurred while fetching user details' });
+    }
 }
 
 module.exports = handleGetDetails;
-
