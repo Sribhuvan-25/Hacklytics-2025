@@ -1,25 +1,28 @@
-const express = require('express')
+const express = require('express');
+const app = express();
 const cors = require('cors');
-const app = express()
+const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const handleAddDetails = require('./controllers/addDetails');
+const handleGetDetails = require('./controllers/getDetails');
 
-require("dotenv").config();
-app.use(cors());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
+app.use(cors());
+app.use(bodyParser.json());
+require("dotenv").config();
+
+const mongoURI = "mongodb+srv://abhinavkompella502:abhi1289@cluster0.sngix.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.log(err));
+
+app.post('/addDetails',handleAddDetails)
+app.get('/getDetails',handleGetDetails)
 
 
 
-app.get('/', (req, res) => {
-    res.send(`Server running on port ${PORT}`);
+app.listen(3000, () => {
+    console.log('Server is running on port 3000');
 });
-
-app.post('/initialData', (req, res) => {
-    res.send('Data received');
-    console.log(req.body);
-})
-
-PORT = 3000
-
-app.listen(PORT , () => {
-    console.log(`Server running on port ${PORT}`);
-})
