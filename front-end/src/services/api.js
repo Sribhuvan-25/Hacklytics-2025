@@ -3,7 +3,7 @@ import mockData from '../data/mockData'; // adjust the path as needed
 
 export const getDashboardData = async () => {
   try {
-    const response = await fetch('http://127.0.0.1:8080/getDetails?username=Subhash17', {
+    const response = await fetch('http://127.0.0.1:8080/getDetails?username=SriBhuvan12', {
       method: 'GET',
       headers: {
         "Content-Type": "application/json",
@@ -28,7 +28,7 @@ export const getDashboardData = async () => {
 export const submitFinancialData = async (data) => {
   data.userDetails = {
     ...data.userDetails,
-    username: 'Subhash17'
+    username: 'SriBhuvan12'
   };
 
   try {
