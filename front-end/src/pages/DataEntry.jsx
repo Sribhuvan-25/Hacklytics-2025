@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Card from '../components/forms/Card';
 import InputField from '../components/forms/InputField';
 import DebtField from '../components/forms/DebtField';
@@ -9,6 +9,7 @@ import { Loader2 } from 'lucide-react';
 
 function DataEntry() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [loading, setLoading] = useState(false);
   const [income, setIncome] = useState([{ title: '', amount: '' }]);
   const [debt, setDebt] = useState([
@@ -16,6 +17,16 @@ function DataEntry() {
   ]);
   const [needs, setNeeds] = useState([{ title: '', amount: '' }]);
   const [wants, setWants] = useState([{ title: '', amount: '' }]);
+
+  useEffect(() => {
+    if (location.state?.prefillData) {
+      const { income: incomeData, debt: debtData, expenses } = location.state.prefillData;
+      setIncome(incomeData || [{ title: '', amount: '' }]);
+      setDebt(debtData.map(item => ({ ...item, isExpanded: false })) || [{ title: '', monthlyPayment: '', apr: '', tenure: '', remainingBalance: '', isExpanded: false }]);
+      setNeeds(expenses.needs || [{ title: '', amount: '' }]);
+      setWants(expenses.wants || [{ title: '', amount: '' }]);
+    }
+  }, [location.state]);
 
   // Income handlers
   const addIncomeField = () => {
@@ -105,33 +116,32 @@ function DataEntry() {
   };
 
   const handleSubmit = async () => {
-    try {
-      setLoading(true);
-      
-      const formData = {
-        income: income.map(item => ({
-          title: item.title,
-          amount: Number(item.amount) || 0
+    setLoading(true);
+    const formData = {
+      income: income.map(({ title, amount }) => ({ 
+        title, 
+        amount: Number(amount) || 0 
+      })),
+      debt: debt.map(({ title, monthlyPayment, apr, remainingBalance, tenure }) => ({
+        title,
+        monthlyPayment: Number(monthlyPayment) || 0,
+        apr: Number(apr) || 0,
+        remainingBalance: Number(remainingBalance) || 0,
+        tenure: Number(tenure) || 0
+      })),
+      expenses: {
+        needs: needs.map(({ title, amount }) => ({ 
+          title, 
+          amount: Number(amount) || 0 
         })),
-        debt: debt.map(item => ({
-          title: item.title,
-          monthlyPayment: Number(item.monthlyPayment) || 0,
-          apr: Number(item.apr) || 0,
-          tenure: Number(item.tenure) || 0,
-          remainingBalance: Number(item.remainingBalance) || 0
-        })),
-        expenses: {
-          needs: needs.map(item => ({
-            title: item.title,
-            amount: Number(item.amount) || 0
-          })),
-          wants: wants.map(item => ({
-            title: item.title,
-            amount: Number(item.amount) || 0
-          }))
-        }
-      };
+        wants: wants.map(({ title, amount }) => ({ 
+          title, 
+          amount: Number(amount) || 0 
+        }))
+      }
+    };
 
+    try {
       await submitFinancialData(formData);
       navigate('/dashboard');
     } catch (error) {
