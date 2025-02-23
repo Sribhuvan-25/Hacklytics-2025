@@ -22,6 +22,7 @@ def generate_financial_report_llama(financial_data):
 
         Please produce a comprehensive report of about 500 words that includes exact values, percentage splits, and clear, step-by-step recommendations.
     """
+<<<<<<< HEAD
     
     combined_prompt = """
         You are a financial advisor specializing in debt reduction and savings growth. Based on the provided financial data, generate a comprehensive, structured report that includes the following:
@@ -95,3 +96,9 @@ if __name__ == "__main__":
 
     report = generate_financial_report_llama(financial_data)
     print(report)
+=======
+
+    llm = OllamaLLM(model="llama3.2", prompt=prompt)
+    report = llm(prompt)
+    return report
+>>>>>>> 28baa4484efc29906374904b1d8e7106d0b9266e

@@ -249,6 +249,7 @@ def round_floats(obj):
     else:
         return obj
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     user_data = {
         "income": [
@@ -280,3 +281,36 @@ if __name__ == "__main__":
     json_output = json.dumps(analysis, indent=2)
     
     print(json_output)
+=======
+# if __name__ == "__main__":
+#     user_data = {
+#         "income": [
+#             {"title": "Job", "amount": 5000},
+#             {"title": "Side Hustle", "amount": 1000},
+#             {"title": "Investment", "amount": 500}
+#         ],
+#         "debt": [
+#             {"name": "Credit Card", "total_amount": 5000, "monthly_payment": 100, "apr": 0.18, "tenure": 60},
+#             {"name": "Car Loan", "total_amount": 10000, "monthly_payment": 200, "apr": 0.05, "tenure": 60}
+#         ],
+#         "expenses": {
+#             "needs": [
+#                 {"title": "Rent", "amount": 1500},
+#                 {"title": "Utilities", "amount": 300}
+#             ],
+#             "wants": [
+#                 {"title": "Dining Out", "amount": 200},
+#                 {"title": "Entertainment", "amount": 150}
+#             ]
+#         },
+#         "savings": 2000
+#     }
+    
+#     analysis = compute_financial_analysis(user_data)
+    
+#     analysis = round_floats(analysis)
+    
+#     json_output = json.dumps(analysis, indent=2)
+    
+#     print(json_output)
+>>>>>>> 28baa4484efc29906374904b1d8e7106d0b9266e

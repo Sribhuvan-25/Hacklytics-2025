@@ -2,3 +2,4 @@ AnalysisModule.ipynb
 DataPoints.md
 __pycache__/
 .env
+.DS_Store
