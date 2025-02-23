@@ -3,7 +3,7 @@ const User = require("../models/User");
 async function handleGetDetails(req, res) {
   try {
     
-    const username = req.body.userDetails.username;
+    const username = req.query.username;
     console.log(username)
     const details = await User.findOne({ "userDetails.username": username });
     console.log(details)
