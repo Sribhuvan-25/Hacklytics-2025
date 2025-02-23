@@ -9,7 +9,9 @@ const handleGetDetails = require('./controllers/getDetails');
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173'
+}));
 app.use(bodyParser.json());
 require("dotenv").config();
 
@@ -23,6 +25,6 @@ app.get('/getDetails',handleGetDetails)
 
 
 
-app.listen(3000, () => {
-    console.log('Server is running on port 3000');
+app.listen(8080, () => {
+    console.log('Server is running on port 8080');
 });

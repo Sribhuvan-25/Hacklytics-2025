@@ -1,29 +1,44 @@
+/* eslint-disable react/prop-types */
 import { useState } from 'react';
-import { MessageCircle, X, Bot, Send, User } from 'lucide-react';
+import { MessageCircle, X, Bot, Send, User, Loader2 } from 'lucide-react';
+import { queryChatbot } from '../../services/api';
 
-const ChatBot = () => {
+const ChatBot = ({ financialData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState([
     { text: "Hello! I'm your financial assistant. How can I help you today?", isBot: true }
   ]);
   const [input, setInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
-    // Add user message
-    setMessages(prev => [...prev, { text: input, isBot: false }]);
+    const userMessage = input.trim();
+    setInput('');
+    setIsLoading(true);
 
-    // Simulate bot response
-    setTimeout(() => {
+    // Add user message immediately
+    setMessages(prev => [...prev, { text: userMessage, isBot: false }]);
+
+    try {
+      const response = await queryChatbot(userMessage, financialData);
+      
+      // Add bot response
       setMessages(prev => [...prev, {
-        text: "I'm a demo chatbot. In a real application, I would provide intelligent responses to your financial questions.",
+        text: response.text || "I apologize, but I couldn't process your request at the moment.",
         isBot: true
       }]);
-    }, 1000);
-
-    setInput('');
+    } catch (error) {
+      console.error('Chat error:', error);
+      setMessages(prev => [...prev, {
+        text: "I'm sorry, I encountered an error. Please try again.",
+        isBot: true
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -75,6 +90,16 @@ const ChatBot = () => {
                 </div>
               </div>
             ))}
+            {isLoading && (
+              <div className="flex items-start gap-2">
+                <div className="w-8 h-8 rounded-full flex items-center justify-center bg-blue-600">
+                  <Bot size={16} />
+                </div>
+                <div className="bg-gray-700 text-white rounded-lg p-3">
+                  <Loader2 className="animate-spin" size={16} />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Input */}
@@ -86,10 +111,12 @@ const ChatBot = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type your message..."
                 className="flex-1 bg-gray-700 text-white rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={isLoading}
               />
               <button
                 type="submit"
-                className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors"
+                disabled={isLoading}
+                className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send size={20} />
               </button>
