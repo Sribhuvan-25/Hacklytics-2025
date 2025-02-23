@@ -3,9 +3,10 @@ const User = require("../models/User");
 async function handleGetDetails(req, res) {
   try {
     
-    const username = req.body.username;
+    const username = req.body.userDetails.username;
     console.log(username)
     const details = await User.findOne({ "userDetails.username": username });
+    console.log(details)
     console.log(details)
     res.status(200).json(details);
   } catch (error) {
@@ -17,3 +18,4 @@ async function handleGetDetails(req, res) {
 }
 
 module.exports = handleGetDetails;
+

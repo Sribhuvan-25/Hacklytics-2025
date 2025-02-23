@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const handleAddDetails = require('./controllers/addDetails');
 const handleGetDetails = require('./controllers/getDetails');
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -19,6 +20,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 app.post('/addDetails',handleAddDetails)
 app.get('/getDetails',handleGetDetails)
+
 
 
 app.listen(3000, () => {
